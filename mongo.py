@@ -1,6 +1,6 @@
 import os
 import pymongo
-if os.path.exists("env.py")
+if os.path.exists("env.py"):
     import env
 
 
@@ -18,11 +18,16 @@ def mongo_connect(url):
         print("Could not cnnect to MongoDB: %s") % e
 
 
-conn = mongo_connect(MONGO_URL)
+conn = mongo_connect(MONGO_URI)
 
 coll = conn[DATABASE][COLLECTION]
 
-documents = coll.find()
+coll.update_many(
+    {"nationality": "american"},
+    {"$set": {"hair_color": "maroon"}}
+)
+
+documents = coll.find({"nationality": "american"})
 
 for doc in documents:
     print(doc)
